@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureNote — Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      overflow: auto;
+    }
+
+    .layout {
+      grid-template-columns: 1fr;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .auth-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      width: 100%;
+      max-width: 860px;
+      min-height: 560px;
+      margin: 0;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 80px rgba(0,0,0,.6);
+      animation: cardIn .4s ease forwards;
+      background: rgba(19, 21, 26, .92);
+      min-width: 0;
+    }
+
+    /* ── Left Brand Panel ── */
+    .auth-brand {
+      min-width: 0;
+      background: linear-gradient(150deg, #062235 0%, #0d0e11 70%);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+      padding: 44px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-brand::before {
+      content: '';
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #6ed8a41a, transparent 70%);
+      top: -100px;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    .auth-brand::after {
+      content: '';
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #c8a96e10, transparent 70%);
+      bottom: -60px;
+      right: -60px;
+      pointer-events: none;
+    }
+
+    .brand-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      min-width: 0;
+    }
+
+    .brand-top__icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #8595c622, #4778a544);
+      border: 1px solid #5a8dc4;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--accent-ok);
+      flex: 0 0 auto;
+    }
+
+    .brand-top__icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .brand-top__name {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .brand-top__tagline {
+      font-size: .7rem;
+      color: var(--text-muted);
+      letter-spacing: .05em;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .brand-hero {
+      position: relative;
+      min-width: 0;
+      max-width: 420px;
+    }
+
+    .brand-hero__headline {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 14px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .brand-hero__headline em {
+      color: var(--accent-ok);
+      font-style: normal;
+    }
+
+    .brand-hero__sub {
+      font-size: .82rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* Steps */
+    .brand-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: .8rem;
+      color: var(--text-dim);
+    }
+
+    .step__num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #6e9fd820;
+      border: 1px solid #4c91b655;
+      color: var(--accent-ok);
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      display: grid;
+      place-items: center;
+    }
+
+    .step__text {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .step__text strong {
+      color: var(--text);
+    }
+
+    /* ── Right Form Panel ── */
+    .auth-form-panel {
+      width: 100%;
+      min-width: 0;
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 44px 40px;
+    }
+
+    .auth-title {
+      font-family: var(--font-serif);
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .auth-title::after {
+      content: '.';
+      color: var(--accent-ok);
+    }
+
+    .auth-subtitle {
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .auth-subtitle a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-subtitle a:hover {
+      text-decoration: underline;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap .form-input {
+      padding-left: 36px;
+    }
+
+    .input-wrap .form-input.has-toggle {
+      padding-right: 36px;
+    }
+
+    .show-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      transition: color var(--transition);
+    }
+
+    .show-toggle:hover {
+      color: var(--text);
+    }
+
+    .pw-strength {
+      margin-top: 6px;
+    }
+
+    .pw-strength__bar {
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .pw-strength__fill {
+      height: 100%;
+      width: 0;
+      border-radius: 2px;
+      transition: width .3s, background .3s;
+    }
+
+    .pw-strength__label {
+      font-size: .65rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      letter-spacing: .03em;
+    }
+
+    .btn--full {
+      width: 100%;
+      justify-content: center;
+      padding: 13px 20px;
+      font-size: .88rem;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--text-muted);
+      font-size: .7rem;
+      letter-spacing: .06em;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .auth-footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: .72rem;
+      color: var(--text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .auth-footer a:hover {
+      color: var(--accent);
+    }
+
+    .feedback {
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      font-size: .8rem;
+      margin-bottom: 14px;
+      display: none;
+      animation: slideDown .2s ease;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .feedback.err {
+      background: #f0707015;
+      border: 1px solid #f0707044;
+      color: var(--accent-err);
+    }
+
+    .feedback.ok {
+      background: #658fc715;
+      border: 1px solid #6093cd44;
+      color: var(--accent-ok);
+    }
+
+    /* ========= Tablet ========= */
+    @media (max-width: 1024px) {
+      .layout {
+        padding: 18px;
+      }
+
+      .auth-shell {
+        grid-template-columns: minmax(0, 1fr) 340px;
+        max-width: 760px;
+        min-height: 520px;
+      }
+
+      .auth-brand {
+        padding: 34px 28px;
+      }
+
+      .auth-form-panel {
+        padding: 36px 28px;
+      }
+
+      .brand-hero__headline {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* ========= Mobile ========= */
+    @media (max-width: 768px) {
+      .layout {
+        align-items: flex-start;
+        padding: 12px;
+      }
+
+      .auth-shell {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        min-height: auto;
+        border-radius: 18px;
+      }
+
+      .auth-brand {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 20px 18px;
+        gap: 18px;
+      }
+
+      .brand-hero {
+        max-width: 100%;
+      }
+
+      .brand-hero__headline {
+        font-size: 1.36rem;
+        line-height: 1.35;
+        margin-bottom: 8px;
+      }
+
+      .brand-hero__sub {
+        font-size: .78rem;
+        line-height: 1.6;
+      }
+
+      .brand-steps {
+        gap: 10px;
+      }
+
+      .step {
+        gap: 10px;
+        font-size: .76rem;
+      }
+
+      .auth-form-panel {
+        padding: 20px 18px 22px;
+      }
+
+      .auth-title {
+        font-size: 1.35rem;
+      }
+
+      .auth-subtitle {
+        margin-bottom: 20px;
+      }
+
+      .btn--full {
+        min-height: 44px;
+      }
+    }
+
+    /* ========= Small mobile ========= */
+    @media (max-width: 480px) {
+      .layout {
+        padding: 10px;
+      }
+
+      .auth-shell {
+        border-radius: 16px;
+      }
+
+      .auth-brand {
+        padding: 18px 14px;
+        gap: 16px;
+      }
+
+      .brand-top {
+        gap: 10px;
+      }
+
+      .brand-top__icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-top__icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .brand-top__name {
+        font-size: 1.1rem;
+      }
+
+      .brand-top__tagline {
+        font-size: .68rem;
+      }
+
+      .brand-hero__headline {
+        font-size: 1.2rem;
+      }
+
+      .brand-hero__sub {
+        font-size: .74rem;
+      }
+
+      .step {
+        font-size: .72rem;
+      }
+
+      .step__num {
+        width: 20px;
+        height: 20px;
+        font-size: .6rem;
+      }
+
+      .auth-form-panel {
+        padding: 18px 14px 20px;
+      }
+
+      .auth-title {
+        font-size: 1.18rem;
+      }
+
+      .auth-subtitle {
+        font-size: .76rem;
+      }
+
+      .btn--full {
+        padding: 12px 16px;
+        font-size: .84rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient">
+    <div class="ambient__blob ambient__blob--1"></div>
+    <div class="ambient__blob ambient__blob--2"></div>
+    <div class="ambient__blob ambient__blob--3"></div>
+  </div>
+
+  <div class="layout">
+    <div class="auth-shell">
+
+      <div class="auth-brand">
+        <div class="brand-top">
+          <div class="brand-top__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-top__name">SecureNote</div>
+            <div class="brand-top__tagline">Private. Minimal. Yours.</div>
+          </div>
+        </div>
+
+        <div class="brand-hero">
+          <h2 class="brand-hero__headline">
+            Start keeping notes the <em>secure</em> way.
+          </h2>
+          <p class="brand-hero__sub">
+            Your account is stored in PocketHost. Your password never leaves the server.
+          </p>
+        </div>
+
+        <div class="brand-steps">
+          <div class="step">
+            <div class="step__num">1</div>
+            <div class="step__text"><strong>Create your account</strong> with email &amp; password.</div>
+          </div>
+          <div class="step">
+            <div class="step__num">2</div>
+            <div class="step__text"><strong>Sign in</strong> to receive your auth token.</div>
+          </div>
+          <div class="step">
+            <div class="step__num">3</div>
+            <div class="step__text"><strong>Write notes</strong> — securely stored on the server.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-form-panel">
+        <h1 class="auth-title">Create account</h1>
+
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="name">
+            Name <span style="color:var(--text-muted);font-size:.65rem">(optional)</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </span>
+            <input
+              type="text"
+              id="name"
+              class="form-input"
+              placeholder="Your display name"
+              autocomplete="name"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </span>
+            <input
+              type="email"
+              id="email"
+              class="form-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </span>
+            <input
+              type="password"
+              id="password"
+              class="form-input has-toggle"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              oninput="updateStrength(this.value)"
+            />
+            <button class="show-toggle" id="pw-toggle" type="button" title="Show/hide">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="pw-strength">
+            <div class="pw-strength__bar">
+              <div class="pw-strength__fill" id="strength-fill"></div>
+            </div>
+            <div class="pw-strength__label" id="strength-label"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password-confirm">Confirm Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+            <input
+              type="password"
+              id="password-confirm"
+              class="form-input"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="register-btn" type="button" onclick="handleRegister()">
+          <span id="register-label">Create Account</span>
+          <div class="btn-spinner" id="register-spinner" style="display:none"></div>
+        </button>
+
+        <div class="auth-divider">or</div>
+
+        <button class="btn btn--ghost btn--full" type="button" onclick="location.href='login.html'">
+          Sign in instead
+        </button>
+
+        <div class="auth-footer">
+          <a href="index.html">← Back to app</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const BASE_URL = process.env.BASE_URL;
+
+    document.getElementById("pw-toggle").addEventListener("click", () => {
+      const f = document.getElementById("password");
+      f.type = f.type === "password" ? "text" : "password";
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleRegister();
+    });
+
+    function updateStrength(val) {
+      const fill  = document.getElementById("strength-fill");
+      const label = document.getElementById("strength-label");
+      let score = 0;
+
+      if (val.length >= 8) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const levels = [
+        { pct: "0%",   color: "transparent",       text: "" },
+        { pct: "25%",  color: "var(--accent-err)", text: "Weak" },
+        { pct: "50%",  color: "#f0a060",           text: "Fair" },
+        { pct: "75%",  color: "var(--accent)",     text: "Good" },
+        { pct: "100%", color: "var(--accent-ok)",  text: "Strong" },
+      ];
+
+      const lv = levels[score];
+      fill.style.width = val.length ? lv.pct : "0%";
+      fill.style.background = lv.color;
+      label.textContent = val.length ? lv.text : "";
+    }
+
+    function showFeedback(msg, type) {
+      const el = document.getElementById("feedback");
+      el.textContent = (type === "err" ? "⚠ " : "✓ ") + msg;
+      el.className = `feedback ${type}`;
+      el.style.display = "block";
+    }
+
+    function setLoading(on) {
+      document.getElementById("register-btn").disabled = on;
+      document.getElementById("register-label").style.display = on ? "none" : "inline";
+      document.getElementById("register-spinner").style.display = on ? "inline-block" : "none";
+    }
+
+    async function handleRegister() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const passwordConfirm = document.getElementById("password-confirm").value;
+
+      if (!email || !password || !passwordConfirm) {
+        showFeedback("Email and password fields are required.", "err");
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showFeedback("Please enter a valid email address.", "err");
+        return;
+      }
+
+      if (password.length < 8) {
+        showFeedback("Password must be at least 8 characters.", "err");
+        return;
+      }
+
+      if (password !== passwordConfirm) {
+        showFeedback("Passwords do not match.", "err");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch(`${BASE_URL}/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, passwordConfirm, name }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          const errMsg = data?.detail?.message || data?.error || "Registration failed.";
+          showFeedback(errMsg, "err");
+          return;
+        }
+
+        showFeedback("Account created! Redirecting to login…", "ok");
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1200);
+      } catch (err) {
+        showFeedback("Cannot connect to server. Is the backend running?", "err");
+      } finally {
+        setLoading(false);
+      }
+    }
+  </script>
+</body>
+</html>
