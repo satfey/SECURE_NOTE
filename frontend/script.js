@@ -4,7 +4,7 @@
 // Backend handles PocketHost access token automatically
 // ============================================================
 
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "https://secure-note-r4z6.onrender.com";
 
 // ── State ─────────────────────────────────────────────────
 let editingNoteId = null;
